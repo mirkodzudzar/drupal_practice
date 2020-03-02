@@ -1,0 +1,17 @@
+# fivestar_custom.fivestar_form:
+#   path: '/fivestar_form'
+#   defaults:
+#     _form: '\Drupal\fivestar_custom\Form\FivestarForm'
+#     _title: 'Fivestar custom'
+#   requirements:
+#     _permission: 'access content'
+  # options:
+  #   no_cache: 'TRUE'
+
+fivestar_custom.list:
+  path: '/ratings'
+  defaults:
+    _controller: '\Drupal\fivestar_custom\Controller\FivestarController::list'
+    _title: 'Your ratings'
+  requirements:
+    _permission: 'access ratings list'

@@ -1,0 +1,310 @@
+/************    GLOBAL CSS    ************/
+
+.field {
+  text-align: justify;
+  text-justify: auto;
+}
+
+.option {
+  display: inline-block;
+}
+
+.region-menubar, .block-superfish {
+  width: 100%;
+}
+
+.block-superfish .menu {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.block-superfish .menu li {
+  flex: 1;
+}
+
+.block-superfish .menu li a {
+  white-space: nowrap;
+}
+
+.block-superfish ul.sf-menu.sf-style-coffee li:hover, ul.sf-menu.sf-style-coffee li.sfHover, ul.sf-menu.sf-style-coffee a.is-active, ul.sf-menu.sf-style-coffee a:focus, ul.sf-menu.sf-style-coffee a:hover, ul.sf-menu.sf-style-coffee span.nolink:hover {
+  text-decoration: none;
+}
+
+/***** SLICK *****/
+.view-recipe-terms {
+  background: #f8f7f6;
+  height: auto;
+}
+
+/* .slick-slide {
+  padding-right: 20px;
+} */
+
+.slick--thumbnail .slide__caption, .slide--caption--below .slide__caption {
+  padding: 5px 15px 5px 0;
+}
+
+.slide__link {
+  display: table;
+  width: 100px;
+  margin: 0;
+  padding-top: 5px;
+}
+
+.slide__link a {
+  display: table-cell; 
+  vertical-align: middle; 
+  text-align: center; 
+}
+
+.slick img, .slick iframe {
+  border-radius: 50%;
+  margin: auto;
+  box-shadow: 5px 5px 8px grey;
+}/* SLICK */
+
+.check_text {
+  font-size: 14px;
+  text-align: center;
+  color: #77b259;
+} 
+
+/***** FLAG *****/
+.image_and_bookmark {
+  position: relative;
+  text-decoration: none;
+}
+
+.flag_bookmark .action-flag {
+  opacity: 0.7;
+}
+
+.flag_bookmark .action-flag:hover {
+  opacity: 1;
+}
+
+.flag_bookmark .action-unflag {
+  opacity: 1;
+}
+
+.flag_bookmark .action-unflag:hover {
+  opacity: 0.7;
+}
+
+.flag_bookmark .action-flag a {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  color: white;
+  background: black;
+  border-radius: 50%;
+  font-size: 50px;
+  text-decoration: none;
+  padding: 10px 10px 16px 10px;
+  opacity: 1;
+} 
+
+.flag_bookmark .action-unflag a {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  color: white;
+  background: orangered;
+  border-radius: 50%;
+  font-size: 50px;
+  text-decoration: none;
+  padding: 10px 10px 16px 10px;
+  opacity: 1;
+}/* FLAG */
+
+.pushbutton:hover, button:hover, .form-submit:hover {
+  border: none;
+}
+
+/***** LOGIN *****/
+.item-list ul {
+  padding-bottom: 20px;
+}/* LOGIN */
+
+/**** HIDING CONTENT THAT HAS BEEN MADE JUST BECAUSE OF META TAGS *****/
+.region-content > article {
+  display: none;
+}
+/*****/
+
+.node {
+  border-style: none;
+}
+
+@media only screen and (max-width: 768px) and (min-width: 481px) {
+  #sidebar-second {
+      width: 100% !important;
+  }
+}
+
+.sidebar .block-i-made-it-block table tr td {
+  border: none;
+}
+
+.sidebar .block-ratings-block table tr td {
+  border: none;
+}
+
+/* .sidebar .block table tr td */
+
+/* fivestar */
+.js-form-type-radio {
+  overflow: hidden;
+  vertical-align: bottom;
+  display: inline-block;
+  width: auto;
+  height: 22px;
+}
+   
+.js-form-type-radio > input {
+  opacity: 0;
+  margin-right: -100%;
+  display: none;
+}
+   
+.js-form-type-radio:nth-child(-n+5) > label {
+  position: relative;
+  display: block;
+  float: right;
+  background: url('/sites/default/files/star-off-big.png');
+  background-size: 22px 22px;
+}
+
+.js-form-type-radio:nth-child(-n+5) > label:before {
+  display: block;
+  opacity: 0;
+  content: '';
+  width: 22px;
+  height: 22px;
+  background: url('/sites/default/files/star-on-big.png');
+  background-size: 22px 22px;
+  transition: opacity 0.2s linear;
+}
+  
+.js-form-type-radio:nth-child(-n+5) > label:hover:before,  
+.js-form-type-radio:nth-child(-n+5) > label:hover ~ label:before,  
+.js-form-type-radio:nth-child(-n+5):not(:hover) > :checked ~ label:before { 
+  opacity: 1; 
+}
+
+.js-form-type-radio:nth-child(6) {
+  display: none;
+}
+
+.js-form-type-radio:last-child > label {
+  position: relative;
+  display: block;
+  float: right;
+  background: url('/sites/default/files/Cancel.png');
+  background-size: 15px 15px;
+  width: 15px;
+  top: 5px;
+}
+
+.js-form-type-radio:last-child > label:before {
+  display: block;
+  opacity: 0;
+  content: '';
+  width: 15px;
+  height: 15px;
+  background: url('/sites/default/files/button_cancel.png');
+  background-size: 15px 15px;
+  transition: opacity 0.2s linear;
+}
+  
+.js-form-type-radio:last-child > label:hover:before,  
+.js-form-type-radio:last-child > label:hover ~ label:before,  
+.js-form-type-radio:last-child:not(:hover) > :checked ~ label:before { 
+  opacity: 1; 
+}
+
+.js-form-type-radio:last-child:after {
+  transform: rotate(-45deg);
+}
+
+.fivestar_message {
+  /* width: 100%; */
+  background: #f3faef;
+  color: #77b259;
+  border: solid 2px #77b259;
+  border-radius: 2px;
+  padding: 5px;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
+
+.fivestar_message a {
+  padding-right: 5px;
+}
+
+.js-form-wrapper {
+  margin: 0;
+}
+
+.js-form-wrapper > legend > span {
+  font-weight: bold;
+}
+
+.fivestar_url .form-item-url {
+  display: none;
+}/* fivestar */
+
+/* this message is centred horizontally and vertically */ 
+.custom_message_screen {
+  background-color: #8ac13e;
+  padding: 0;
+  height: 48px;
+  border-radius: .85rem;
+  position: fixed;
+  top: 35%;
+  width: 82%;
+  max-width: 500px;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  text-align: center;
+  white-space: normal;
+  z-index: 10001;
+  color: #fff;
+  animation:fade 0.5s 1;
+  -webkit-animation:fade 0.5s 1;
+  animation-fill-mode: forwards;
+
+  /* this is temporary solution because div remains on the page and prevents access to the elements behind it */
+  animation-delay:5s;
+  -webkit-animation-delay:4s; /* Safari and Chrome */
+  -webkit-animation-fill-mode: forwards;
+}
+
+.custom_message_screen span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  line-height: 1.5rem;
+} 
+
+@keyframes fade {
+  from {opacity :1;}
+  to {
+    opacity :0; 
+    visibility: hidden;
+  }
+}
+
+@-webkit-keyframes fade {
+  from {opacity :1;}
+  to {
+    opacity :0; 
+    visibility: hidden;
+  }
+}

@@ -1,0 +1,8 @@
+services:
+  recipe_check.enabler:
+    class: Drupal\recipe_check\EnablerService
+    arguments: []
+
+  # recipe_check.autentication:
+  #   class: Drupal\recipe_check\AutenticationService
+  #   arguments: []

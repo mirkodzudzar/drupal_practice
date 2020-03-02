@@ -1,0 +1,4 @@
+name: Button Renaming
+type: module
+core: '8.x'
+description: 'Rename some core buttons'

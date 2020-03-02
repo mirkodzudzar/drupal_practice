@@ -1,0 +1,4 @@
+name: Body trimming
+type: module
+core: '8.x'
+description: 'Body trimming in teaser mode, because it is not working by default'

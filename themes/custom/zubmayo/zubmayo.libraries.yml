@@ -1,0 +1,48 @@
+base:
+  version: VERSION
+  css:
+    theme:
+      css/colors.css: {}
+      css/zubmayo.css: {}
+      css/front-page.css: {}
+      css/node-page.css: {}
+      css/taxonomy-page.css: {}
+      css/all-recipes-page.css: {}
+      css/contact-page.css: {}
+      css/preparation-page.css: {}
+      css/video-page.css: {}
+  js:
+    js/zubmayo.js: {}
+  dependencies:
+    - core/jquery
+
+color.preview:
+  version: VERSION
+  css:
+    theme:
+      color/preview.css: {}
+      css/admin-layout-settings.css: {}
+  js:
+    color/preview.js: {}
+    js/mayo.js: {}
+  dependencies:
+    - color/drupal.color
+#    - core/drupalSettings
+
+maintenance-page:
+  version: VERSION
+  css:
+    theme:
+      css/maintenance-page.css: {}
+      css/colors.css: {}
+  dependencies:
+    - system/maintenance
+    - zubmayo/base
+
+responsive-layout:
+  version: VERSION
+  css:
+    theme:
+      public://mayo/zubmayo_files/zubmayo.responsive.layout.css: {}
+  dependencies:
+    - zubmayo/base

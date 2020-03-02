@@ -1,0 +1,6 @@
+fivestar_custom.newpage:
+  title: 'Ratings'
+  description: 'List of all recipes that you rated'
+  route_name: fivestar_custom.list
+  weight: 10
+  menu_name: account

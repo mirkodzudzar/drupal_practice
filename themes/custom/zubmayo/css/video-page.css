@@ -1,0 +1,23 @@
+/************   custom-video-preview    ************/
+
+.custom-video-preview  .views-view-table .views-field-title a {
+  font-size: 20px;
+}
+
+.custom-video-preview  .video-embed-field-responsive-video {
+  margin: auto;
+}
+
+/* On screens that are 600px wide or less, make video full div width */
+@media screen and (min-width: 600px) {
+  .custom-video-preview  .video-embed-field-responsive-video {
+    width: 80%;
+  }
+}
+
+/* On screens that are 750px wide or less, make video full div width */
+@media screen and (min-width: 750px) {
+  .custom-video-preview  .video-embed-field-responsive-video {
+    width: 50%;
+  }
+}

@@ -1,0 +1,102 @@
+{
+    "name": "drupal/drupal",
+    "description": "Drupal is an open source content management platform powering millions of websites and applications.",
+    "type": "project",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "composer/installers": "^1.0.24",
+        "wikimedia/composer-merge-plugin": "^1.4",
+        "drupal/admin_toolbar": "^2.0",
+        "drush/drush": "9.*",
+        "drupal/override_node_options": "^2.4",
+        "drupal/video_embed_field": "^2.2",
+        "antennaio/jquery-bar-rating": "^1.2",
+        "drupal/votingapi_widgets": "^1.0@alpha",
+        "drupal/votingapi": "^3.0@beta",
+        "drupal/starrating": "^4.0@alpha",
+        "drupal/flag": "^4.0@beta",
+        "drupal/slick": "^2.0",
+        "drupal/slick_extras": "^1.0@RC",
+        "drupal/slick_views": "^2.1",
+        "drupal/menu_link_content_visibility": "^1.2",
+        "drupal/fivestar": "^1.0@alpha",
+        "drupal/fancy_login": "^2.2",
+        "drupal/redirect_after_login": "^2.5",
+        "drupal/simple_access": "^3.0@alpha",
+        "drupal/back_to_top": "^1.1",
+        "drupal/views_infinite_scroll": "^1.6",
+        "drupal/imagefield_slideshow": "^1.10",
+        "drupal/ordered_list": "^1.2",
+        "drupal/webform": "^5.8",
+        "drupal/twig_extensions": "^2.0",
+        "drupal/honeypot": "^1.30"
+    },
+    "replace": {
+        "drupal/core": "^8.7"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "preferred-install": "dist",
+        "autoloader-suffix": "Drupal8"
+    },
+    "extra": {
+        "_readme": [
+            "By default Drupal loads the autoloader from ./vendor/autoload.php.",
+            "To change the autoloader you can edit ./autoload.php.",
+            "This file specifies the packages.drupal.org repository.",
+            "You can read more about this composer repository at:",
+            "https://www.drupal.org/node/2718229"
+        ],
+        "merge-plugin": {
+            "include": [
+                "core/composer.json"
+            ],
+            "recurse": true,
+            "replace": false,
+            "merge-extra": false
+        },
+        "installer-paths": {
+            "core": ["type:drupal-core"],
+            "modules/contrib/{$name}": ["type:drupal-module"],
+            "profiles/contrib/{$name}": ["type:drupal-profile"],
+            "themes/contrib/{$name}": ["type:drupal-theme"],
+            "drush/contrib/{$name}": ["type:drupal-drush"],
+            "modules/custom/{$name}": ["type:drupal-custom-module"],
+            "themes/custom/{$name}": ["type:drupal-custom-theme"]
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Drupal\\Core\\Composer\\": "core/lib/Drupal/Core/Composer"
+        }
+    },
+    "scripts": {
+        "pre-autoload-dump": "Drupal\\Core\\Composer\\Composer::preAutoloadDump",
+        "post-autoload-dump": "Drupal\\Core\\Composer\\Composer::ensureHtaccess",
+        "post-package-install": "Drupal\\Core\\Composer\\Composer::vendorTestCodeCleanup",
+        "post-package-update": "Drupal\\Core\\Composer\\Composer::vendorTestCodeCleanup",
+        "drupal-phpunit-upgrade-check": "Drupal\\Core\\Composer\\Composer::upgradePHPUnit",
+        "drupal-phpunit-upgrade": "@composer update phpunit/phpunit phpspec/prophecy symfony/yaml --with-dependencies --no-progress",
+        "phpcs": "phpcs --standard=core/phpcs.xml.dist --runtime-set installed_paths $($COMPOSER_BINARY config vendor-dir)/drupal/coder/coder_sniffer --",
+        "phpcbf": "phpcbf --standard=core/phpcs.xml.dist --runtime-set installed_paths $($COMPOSER_BINARY config vendor-dir)/drupal/coder/coder_sniffer --"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "antennaio/jquery-bar-rating",
+                "version": "1.2.2",
+                "type": "drupal-library",
+                "dist": {
+                    "type": "zip",
+                    "url": "https://github.com/antennaio/jquery-bar-rating/archive/v1.2.2.zip"
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,37 @@
+<?php
+
+use Drupal\Core\Database\Database;
+
+/**
+ * Implements hook_preprocess_HOOK()
+ */
+function fivestar_custom_preprocess_node(&$variables) {
+  if ($variables['node']->getType() == 'recipe') {
+    $form = \Drupal::formBuilder()->getForm('Drupal\fivestar_custom\Form\FivestarForm', $variables['node']->id());
+    // $form = \Drupal::formBuilder()->getForm('Drupal\fivestar_custom\Form\FivestarForm');
+    $variables['fivestar_form'] = $form;
+  }
+  
+  $form = \Drupal::formBuilder()->getForm('Drupal\recipe_check\Form\RecipeCheckForm');
+  $variables['recipe_check_form'] = $form;
+}
+
+// /**
+//  * Implements template_form_FORM_ID_alter().
+//  */
+// function fivestar_custom_form_fivestar_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  
+//   ksm($form_state);
+// }
+
+function fivestar_custom_entity_delete(Drupal\Core\Entity\EntityInterface $entity) {
+  if ($entity->bundle() == 'recipe') {
+    $delete = Database::getConnection()->delete('fivestar_custom_vote');
+    $delete->condition('entity_id', $entity->id());
+    $delete->execute();
+
+    $delete = Database::getConnection()->delete('fivestar_custom_result');
+    $delete->condition('entity_id', $entity->id());
+    $delete->execute();
+  }
+}

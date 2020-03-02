@@ -1,0 +1,140 @@
+<?php
+
+/**
+ * @file
+ * Recipe Check Module Hooks
+ */
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Database\Database;
+use Drupal\user\Entity\User;
+
+/**
+ * Implements hook_form_alter().
+ * 
+ * Alter the node add/edit form to include admin setting for displaying RecipeCheckBlock with content
+ */
+function recipe_check_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $node = $form_state->getFormObject()->getEntity();
+  $current_node_type = $node->getType();
+  $config = \Drupal::config('recipe_check.settings');
+  $types = $config->get('allowed_types', array());
+  // Recipe Check Options for addministrators
+  if (in_array($current_node_type, $types)) {
+    $form['recipe_check'] = array(
+      '#type' => 'details',
+      '#title' => t('Recipe Check Collection'),
+      '#access' => \Drupal::currentUser()->hasPermission('administer recipe_check'),
+      '#group' => 'advanced',
+      '#weight' => 100,
+    );
+    
+    /** @var \Drupal\recipe_check\EnablerService $enabler */
+    $enabler = \Drupal::service('recipe_check.enabler');
+    $form['recipe_check']['recipe_check_enabled'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Collect Recipe Check e-mail addresses for this node(recipe)'),
+      '#default_value' => $enabler->isEnabled($node),
+    );
+    foreach (array_keys($form['actions']) as $action) {
+      if ($action != 'preview' && isset($form['actions'][$action]['#type']) && $form['actions'][$action]
+        ['#type'] === 'submit') {
+        $form['actions'][$action]['#submit'][] = 'recipe_check_form_node_form_submit';
+      }
+    }
+  }
+}
+
+/**
+ * Form submission handler for Recipe Check item field on the node form.
+ *
+ * @see recipe_check_form_node_form_alter()
+ *
+ * @param array $form
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ */
+function recipe_check_form_node_form_submit(array $form, FormStateInterface $form_state) {
+  /** @var \Drupal\recipe_check\EnablerService $enabler */
+  $enabler = \Drupal::service('recipe_check.enabler');
+  $node = $form_state->getFormObject()->getEntity();
+  if ($enabled = $form_state->getValue('recipe_check_enabled')) {
+    $enabler->setEnabled($node);
+  }
+  else {
+    $enabler->delEnabled($node);
+  }
+}
+
+function recipe_check_preprocess_html(&$variables) {
+  if ($variables['page']['#title'] == 'I made it list') {
+    // function for storing some values in array of meta tags
+    function meta_tag($attribute, $name, $result) {
+      $new_tag = array(
+        array(
+          '#tag' => 'meta',
+          '#attributes' => 
+          array(
+            $attribute => $name,
+            'content' => $result,
+          ),
+        ),
+        $name,
+      );
+      
+      return $new_tag;
+    }
+  
+    $results = array();
+    $new_tag = array();
+    $site_name = \Drupal::config('system.site')->get('name');
+    $request = \Drupal::request();
+    if ($route = $request->attributes->get(\Symfony\Cmf\Component\Routing\RouteObjectInterface::ROUTE_OBJECT)) {
+      $title = \Drupal::service('title_resolver')->getTitle($request, $route); 
+      $title = $title . " | " .$site_name;
+    }
+
+    // basic url address like www.example.com
+    $host = \Drupal::request()->getSchemeAndHttpHost();
+    $path_alias = \Drupal::service('path.alias_manager')->getAliasByPath(\Drupal::service('path.current')->getPath());
+    $url = $host . $path_alias;
+
+    $locale = 'en-US';
+    $card = 'summary';
+   
+    $results = array(
+      meta_tag('name', 'robots', 'index, follow'),
+      // meta_tag('name', 'description', $description),
+      meta_tag('property', 'og:title', $title),
+      // meta_tag('property', 'og:type', $type),
+      // meta_tag('property', 'og:image', $image),
+      // meta_tag('property', 'og:description', $description),
+      meta_tag('property', 'og:locale', $locale),
+      meta_tag('property', 'og:site_name', $site_name),
+      meta_tag('property', 'og:url', $url),
+      meta_tag('property', 'twitter:card', $card),
+      meta_tag('property', 'twitter:site', $site_name),
+      meta_tag('property', 'twitter:title', $title),
+      // meta_tag('property', 'twitter:description', $description),
+      // meta_tag('property', 'twitter:image', $image),
+      meta_tag('property', 'twitter:url', $url),
+      // meta_tag('property', 'twitter:creator', $creator);
+    );
+  
+    foreach ($results as $result) {
+      $new_tag = array_push($variables['page']['#attached']['html_head'], $result);
+    }
+  
+    return $new_tag;
+  }
+}
+
+function recipe_check_entity_delete(Drupal\Core\Entity\EntityInterface $entity) {
+  if ($entity->bundle() == 'recipe') {
+    $delete = Database::getConnection()->delete('recipe_check');
+    $delete->condition('nid', $entity->id());
+    $delete->execute();
+  
+    $delete = Database::getConnection()->delete('recipe_check_enabled');
+    $delete->condition('nid', $entity->id());
+    $delete->execute();
+  }
+}

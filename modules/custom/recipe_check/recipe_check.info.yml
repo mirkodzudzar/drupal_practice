@@ -1,0 +1,7 @@
+name: Recipe Check
+description: Allows users to check submit button 'I made recipe'
+package: Recipe Check
+type: module
+version: 1.0
+core: 8.x
+configure: recipe_check.admin_settings

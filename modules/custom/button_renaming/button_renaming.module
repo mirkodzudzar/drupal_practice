@@ -1,0 +1,20 @@
+<?php 
+
+/**
+ * Implementation of hook_form_alter
+ */
+
+// function button_renaming_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+//   if($form_id == 'comment_comment_form') {
+//     $form['actions']['submit']['#value'] = t('Comment');
+//   }
+
+//   if($form_id == 'node_recipe_form') {
+//     $form['actions']['submit']['#value'] = t('Create recipe');
+//   }
+
+//   if($form_id == 'search_block_form') {
+//     $form['keys']['#title'] = t('Find a recipe heresadsadas');
+//     $form['keys']['#title_display'] = 'Find a recipe HEREsadasd';
+//   }
+// }

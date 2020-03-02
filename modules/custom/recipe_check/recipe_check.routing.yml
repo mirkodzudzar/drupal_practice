@@ -1,0 +1,24 @@
+recipe_check.admin_settings:
+  path: '/admin/config/content/recipe_check'
+  defaults:
+    _form: '\Drupal\recipe_check\Form\RecipeCheckSettingsForm'
+    _title: 'Recipe Check Settings'
+  requirements:
+    _permission: 'administer recipe_check'
+
+recipe_check.list:
+  path: '/i-made-it'
+  defaults:
+    _controller: '\Drupal\recipe_check\Controller\RecipeCheckController::list'
+    _title: 'I made it list'
+  requirements:
+    _permission: 'access recipe_check list'
+
+recipe_check.report:
+  path: '/admin/reports/recipe_check'
+  defaults:
+    _controller: '\Drupal\recipe_check\Controller\ReportController::report'
+    _title: 'List of recipe checks'
+  requirements:
+    _permission: 'access recipe_check report'
+    _permission: 'view recipe_check'

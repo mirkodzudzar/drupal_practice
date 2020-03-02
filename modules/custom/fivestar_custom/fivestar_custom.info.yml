@@ -1,0 +1,7 @@
+name: Fivestar Custom
+type: module
+description: Custom fivestar rating form for nodes (recipes).
+core: 8.x
+package: Voting
+# dependencies:
+#   - votingapi

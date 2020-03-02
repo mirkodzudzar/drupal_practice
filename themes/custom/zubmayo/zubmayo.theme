@@ -1,0 +1,218 @@
+<?php
+/**
+ * @file
+ * Implementing hook and preprocess functions here
+ */
+
+use Drupal\views\ViewExecutable;
+use Drupal\Core\Database\Database;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\user\Entity\User;
+
+/**
+ ************** Implementing preprocess functions here ***************
+ */
+
+/**
+* Implementing hook_preprocess()
+*/
+// function zubmayo_preprocess(&$variables, $hook) {
+//   //for debugging
+//   var_dump($hook);
+// }
+
+/**
+ * Implements hook_preprocess_HOOK()
+ */
+// function zubmayo_preprocess_select(&$variables) {
+//   ksm($variables);
+//   // kint($variables);
+// }
+
+/**
+ * Implements hook_preprocess_HOOK()
+ */
+function zubmayo_preprocess_superfish_menu_items(&$variables) {
+  $user = \Drupal::currentUser();
+  foreach ($variables['menu_items'] as &$menu_item) {
+    if ($menu_item['link']['#title'] == 'All recipes') {
+      // $counter = db_query("SELECT count(nid) FROM {node} WHERE type='recipe'")->fetchField();
+      // Recipe count
+      $select = Database::getConnection()->select('node', 'n');
+      $select->addField('n', 'nid');
+      $select->condition('type', 'recipe');
+      $counter = $select->countQuery()->execute()->fetchField();
+
+      $menu_item['link']['#title'] = $menu_item['link']['#title'] . ' (' . $counter . ')';
+    }
+    if ($menu_item['link_menuparent']['#title'] == 'Account link') {
+      // $user = User::load(\Drupal::currentUser()->id())->getUsername();
+      $username = $user->getUsername();
+      $menu_item['link_menuparent']['#title'] = $username;
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK()
+ */
+function zubmayo_preprocess_menu(&$variables) {
+  foreach ($variables['items'] as &$item) {
+    if ($item['title'] == 'My account') {
+      // $user = \Drupal\user\Entity\User::load(\Drupal::currentUser()->id())->getUsername();
+      $username = \Drupal::currentUser()->getUsername();
+      $item['title'] = $username;
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK()
+ */
+function zubmayo_preprocess_html(&$variables) {
+  if ($variables['head_title']['title'] == 'Food Preparation Inspiration') {
+    $variables['attributes']['class'][] = 'custom-front-page';
+  }
+  elseif ($variables['head_title']['title'] == 'All recipes') {
+    $variables['attributes']['class'][] = 'custom-all-recipes';
+  }
+  elseif ($variables['head_title']['title'] == 'Recipe preparation time') {
+    $variables['attributes']['class'][] = 'custom-preparation-time';
+  }
+  elseif ($variables['head_title']['title'] == 'Video preview') {
+    $variables['attributes']['class'][] = 'custom-video-preview';
+  }
+
+  // 'custom_message' is the class to target this message with ajax 
+  // to style this message after ajax change element, put message in span inside div with class 'custom_message_screen'
+  $variables['custom_message'] = null;
+}
+
+/**
+ * Implements hook_preprocess_page_title().
+ */
+function zubmayo_preprocess_page_title(&$variables) {
+  function db_count_recipe($table, $field, $condition1, $condition2) {
+    $select = Database::getConnection()->select($table);
+    $select->addField($table, $field);
+    $select->condition($condition1, $condition2);
+    
+    return $select->countQuery()->execute()->fetchField();
+  }
+  $node = \Drupal::request()->attributes->get('node');
+  $user = \Drupal::currentUser();
+  
+  if ($node && $node->bundle() == 'page') {
+    if ($node->getTitle() == 'All recipes'){
+      // Recipes count
+      $counter = db_count_recipe('node', 'nid', 'type', 'recipe');
+      $variables['title'] = t('@title (@counter)', ['@title' => $node->getTitle(), '@counter' => $counter]);
+    }
+    elseif ($node->getTitle() == 'Favorites') {
+      // Favorits count
+      $counter = db_count_recipe('flagging', 'entity_id', 'uid', $user->id());
+      $variables['title'] = t('@title (@counter)', ['@title' => $node->getTitle(), '@counter' => $counter]);
+    }
+    elseif ($node->getTitle() == 'Ratings') {
+      // Ratings count
+      $counter = db_count_recipe('votingapi_vote', 'entity_id', 'user_id', $user->id());
+      $variables['title'] = t('@title (@counter)', ['@title' => $node->getTitle(), '@counter' => $counter]);
+    }
+  }
+
+  if (($variables['title']) == 'I made it list') {
+    $counter = db_count_recipe('recipe_check', 'nid', 'uid', $user->id());
+    $variables['title'] = $variables['title'] . ' (' . $counter . ')';
+  }
+
+  if (($variables['title']) == 'Your ratings') {
+    $counter = db_count_recipe('fivestar_custom_vote', 'value', 'user_id', $user->id());
+    $variables['title'] = $variables['title'] . ' (' . $counter . ')';
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK()
+ */
+
+function zubmayo_preprocess_field(&$variables) {
+  // if ($variables['element']['#field_type'] == 'created' || $variables['element']['#title'] == 'Authored on') {
+  //   foreach ($variables['items'] as $item) {
+  //     $date = $item['content']['#markup'];
+  //     $date = strtotime(str_replace('/', '-', $date));
+
+  //     // // Getting the node creation time stamp from the comment object.
+  //     // $date = $variables['comment']->getCreatedTime();
+  //     // // Here you can use drupal's format_date() function, or some custom php date formatting.
+  //     // $variables['created'] = \Drupal::service('date.formatter')->formatInterval(REQUEST_TIME - $date);
+  //     // $variables['submitted'] = t('!datetime', array('!datetime' => $variables['created'] . ' ago'));
+     
+  //     var_dump($item['content']['#markup']);
+  //   }
+  // }
+
+  if ($variables['element']['#field_name'] == 'field_steps_of_preparation' && $variables['element']['#bundle'] == 'recipe') {
+    $i = 1;
+    foreach ($variables['items'] as $item) {
+      $item['attributes']['id'] = "preparation-$i";
+      $i++;
+    }
+  }
+  elseif ($variables['element']['#field_name'] == 'field_ingredien' && $variables['element']['#bundle'] == 'recipe') {
+    $i = 1;
+    foreach ($variables['items'] as $item) {
+      $item['attributes']['id'] = "ingredient-$i";
+      $i++;
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ **************** Implementing hook functions here ******************
+ */
+
+/**
+ * Implements template_form_FORM_ID_alter().
+ */
+function zubmayo_form_comment_comment_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if($form_id == 'comment_comment_form') {
+    $form['actions']['submit']['#value'] = t('Comment');
+  }
+}
+
+/**
+ * Implements template_form_FORM_ID_alter().
+ */
+function zubmayo_form_node_recipe_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if($form_id == 'node_recipe_form') {
+    $form['actions']['submit']['#value'] = t('Create recipe');
+  }
+}
+
+/**
+ * Implements template_form_FORM_ID_alter().
+ */
+function zubmayo_form_search_block_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  if($form_id == 'search_block_form') {
+    $form['keys']['#title'] = t('Find a recipe');
+    $form['keys']['#attributes']['placeholder'] = t('Find a recipe');
+    // $form['keys']['#size'] = 15;
+    $form['keys']['#default_value'] = t('Find a recipe');
+    $form['keys']['#attributes']['onblur'] = "if (this.value == '') {this.value = 'Find a recipe';}";
+    $form['keys']['#attributes']['onfocus'] = "if (this.value == 'Find a recipe') {this.value = '';}";
+  }
+}

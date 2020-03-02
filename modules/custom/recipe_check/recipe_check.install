@@ -1,0 +1,63 @@
+<?php
+function recipe_check_schema() {
+  $schema['recipe_check'] = array(
+    'description' => 'Stores email, timestamp, nid and uid for recipe check.',
+    'fields' => array(
+      'id' => array(
+        'descripion' => 'The primary identifier for the record.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'uid' => array(
+        'description' => 'The {users}.uid that checked recipe.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'nid' => array(
+        'description' => 'The {node} .nid for this recipe.',
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => FALSE,
+        'default' => 0,
+      ),
+      'mail' => array(
+        'description' => 'User\'s email address',
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => FALSE,
+        'default' => '',
+      ),
+      'created' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Timestamp for when recipe was checked.',
+      ),
+    ),
+    'primary key' => array('id'),
+    'indexes' => array(
+      'node' => array('nid'),
+      'node_user' => array(
+        'nid',
+        'uid',
+      ),
+    ),
+  );
+
+  $schema['recipe_check_enabled'] = array(
+    'description' => 'Tracks whether recipe_check is enabled for a node(recipe)',
+    'fields' => array(
+      'nid' => array(
+        'description' => 'The {node} .nid that has recipe_check enabled',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+    ),
+    'primary key' => array('nid'),
+  );
+
+  return $schema;
+}

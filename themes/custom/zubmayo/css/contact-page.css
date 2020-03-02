@@ -1,0 +1,9 @@
+/************   .path-contact    ************/
+
+.path-contact .form-item-name, .path-contact .form-item-mail {
+  display: flex;
+}
+
+.path-contact label {
+  padding-right: 1em;
+}

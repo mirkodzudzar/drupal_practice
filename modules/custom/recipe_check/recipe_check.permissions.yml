@@ -1,0 +1,16 @@
+view recipe_check:
+  title: 'View Recipe Check Form'
+  description: 'View and submit the Recipe Check form'
+
+access recipe_check list:
+  title: 'Access I made it List'
+  description: 'View the listing of all recipes that has been made by logged in user.'
+
+access recipe_check report:
+  title: 'Access List of Recipe Checks'
+  description: 'View the report listing all Recipe Checks submitted.'
+
+administer recipe_check:
+  title: 'Administer Recipe Check Settings'
+  description: 'Access the Recipe Check administration settings page.'
+  restrict access: true

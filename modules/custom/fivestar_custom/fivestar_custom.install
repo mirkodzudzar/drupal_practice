@@ -1,0 +1,151 @@
+<?php
+function fivestar_custom_schema() {
+  $schema['fivestar_custom_result'] = array(
+    'description' => '',
+    'fields' => array(
+      'id' => array(
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'type' => array(
+        'description' => 'The ID of the target entity',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => FALSE,
+        'default' => NULL,
+      ),
+      'entity_type' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => FALSE,
+        'default' => NULL,
+      ),
+      'entity_id' => array(
+        'description' => 'The ID of the target entity',
+        'type' => 'int',
+        'length' => 10,
+        'unsigned' => TRUE,
+        'not null' => FALSE,
+        'default' => NULL,
+      ),
+      'value' => array(
+        'type' => 'float',
+        'not null' => FALSE,
+        'default' => NULL,
+      ),
+      'value_type' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => FALSE,
+        'default' => NULL,
+      ),
+      'function' => array(
+        'type' => 'varchar',
+        'length' => 100,
+        'not null' => FALSE,
+        'default' => NULL,
+      ),
+      'timestamp' => array(
+        'type' => 'int',
+        'length' => 11,
+        'not null' => FALSE,
+        'default' => NULL,
+      ),
+    ),
+    'primary key' => array('id'),
+    'indexes' => array(
+      'vote_result_field__type__target_id' => array(
+        'type'
+      ),
+      'vote_result_field__entity_id__target_id' => array(
+        'entity_id'
+      ),
+    ),
+  );
+
+  $schema['fivestar_custom_vote'] = array(
+    'description' => '',
+    'fields' => array(
+      'id' => array(
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+
+      'type' => array(
+        'description' => 'The ID of the target entity',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+      ),
+
+      'entity_type' => array(
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => FALSE,
+        'default' => NULL,
+      ),
+
+      'entity_id' => array(
+        'description' => 'The ID of the target entity',
+        'type' => 'int',
+        'length' => 10,
+        'unsigned' => TRUE,
+        'not null' => FALSE,
+        'default' => NULL,
+      ),
+
+      'value' => array(
+        'type' => 'float',
+        'not null' => FALSE,
+        'default' => NULL,
+      ),
+
+      'value_type' => array(
+        'type' => 'varchar',
+        'length' => '64',
+        'not null' => FALSE,
+        'default' => NULL,
+      ),
+
+      'user_id' => array(
+        'description' => 'The ID of the target entity',
+        'type' => 'int',
+        'length' => 10,
+        'unsigned' => TRUE,
+        'not null' => FALSE,
+        'default' => NULL,
+      ),
+
+      'timestamp' => array(
+        'type' => 'int',
+        'length' => 11,
+        'not null' => FALSE,
+        'default' => NULL,
+      ),
+
+      'field_name' => array(
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => FALSE,
+        'default' => NULL,
+      ),
+    ),
+
+    'primary key' => array('id'),
+    'indexes' => array(
+      'vote_field__type__target_id' => array(
+        'type'
+      ),
+      'vote_field__entity_id__target_id' => array(
+        'entity_id'
+      ),
+      'vote_field__user_id__target_id' => array(
+        'user_id'
+      ),
+    ),
+  );
+
+  return $schema;
+}

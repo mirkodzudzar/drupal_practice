@@ -1,0 +1,11 @@
+#Schema for the configuration file of recipe_check module.
+recipe_check.settings:
+  type: config_object
+  label: 'Recipe Check Content Type Settings'
+  mapping:
+    allowed_types:
+      type: sequence
+      label: 'Content types Recipe Check Form can display on'
+      sequence:
+        type: string
+        label: 'Content type'

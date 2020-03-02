@@ -1,0 +1,6 @@
+name: My Meta Tags
+description: Meta tags for 'Recipe' content type
+package: My Meta Tags
+type: module
+version: 1.0
+core: 8.x
