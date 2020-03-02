@@ -56,6 +56,10 @@ class FivestarForm extends FormBase {
       $vote_string = 'votes';
     }
 
+    if ($result_count == null) {
+      $result_count = 0;
+    }
+
     if($result_def == 0) {
       $result_def = "-";
     }
@@ -88,7 +92,7 @@ class FivestarForm extends FormBase {
           'message' => '',
         ), 
       ],
-      '#suffix' => "<div class='average_message_$nid'><p>Average: $result_avg ($result_count $vote_string)</p></div>",
+      '#suffix' => "<div class='average_message_$nid'><p>$result_avg from $result_count $vote_string</p></div>",
     ];
     
     $form['nid'] = [
@@ -209,7 +213,7 @@ class FivestarForm extends FormBase {
     return $this->response->addCommand(
       new HtmlCommand(
         ".average_message_$nid",
-        "<p class='average_message'>Average: $result_avg ($result_count $vote_string)</p>",
+        "<p class='average_message'>$result_avg from $result_count $vote_string</p>",
       ),
     );
   }  
