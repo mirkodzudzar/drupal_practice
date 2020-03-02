@@ -46,6 +46,7 @@ sites/simpletest
 /themes/contrib/
 /profiles/contrib/
 /libraries/
+/sites/all/
 
 # Ignore sensitive information
 /sites/*/settings.local.php
