@@ -10,6 +10,7 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Database\Database;
 use Drupal\Component\Render\FormattableMarkup; 
 use Drupal\Component\Utility\SafeMarkup;
+use Drupal\image\Entity\ImageStyle;
 
 /**
  * Controller for list of all recepies that has been made by some user
@@ -47,6 +48,17 @@ class FivestarController extends ControllerBase {
       $entries[$i]['timestamp'] .= ' ago';
       // $entries[$i]['timestamp'] = date("H:i:s d-m-Y", substr($entries[$i]['timestamp'], 0, 10));
       $entries[$i]['value'] = round($entries[$i]['value'] / 10, 0);
+
+      // Get a node storage object.
+      $node_storage = \Drupal::entityManager()->getStorage('node');
+  
+      // Load a single node.
+      $node = $node_storage->load($entries[$i]['entity_id']);
+  
+      if ($node->field_image->entity != NULL) {
+        $style = ImageStyle::load('term');
+        $entries[$i]['image_url'] = file_create_url($style->buildUrl($node->field_image->entity->getFileUri()));
+      }
     }
 
     return $entries;
@@ -62,9 +74,9 @@ class FivestarController extends ControllerBase {
     $content = array();
     
     $headers = array(
-      t('Rating'),
-      t('Recipe'),
-      t('Rated'),
+      'Rating' => t('Rating'),
+      'Recipe' => t('Recipe'),
+      'Rated' => t('Rated'),
     );
 
     $rows = array();
@@ -74,9 +86,13 @@ class FivestarController extends ControllerBase {
       // $rows[] = array_map('SafeMarkup::checkPlain', $entry);
       $rows[] = array(
         $entry['value'] . ' ★',
-        array('data' => new FormattableMarkup('<a href=":link">@name</a>', 
-          [':link' => $entry['link_url'] = \Drupal::service('path.alias_manager')->getAliasByPath('/node/' . $entry['entity_id']), 
-          '@name' => $entry['title']])
+        'data1' => new FormattableMarkup(
+          '<a href=":link_url">@name</a><br><a href=":link_url"><img src=":image_url"></a>', 
+          [
+            ':link_url' => $entry['link_url'] = \Drupal::service('path.alias_manager')->getAliasByPath('/node/' . $entry['entity_id']), 
+            '@name' => $entry['title'],
+            ':image_url' => $entry['image_url']
+          ]
         ),
         $entry['timestamp'],
       );

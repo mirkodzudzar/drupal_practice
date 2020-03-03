@@ -9,6 +9,7 @@ namespace Drupal\recipe_check\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Database\Database;
 use Drupal\Component\Render\FormattableMarkup; 
+use Drupal\image\Entity\ImageStyle;
 
 /**
  * Controller for list of all recepies that has been made by some user
@@ -48,6 +49,17 @@ class RecipeCheckController extends ControllerBase {
       ]);
       $entries[$i]['created'] .= ' ago';
       // $entries[$i]['created'] = date("H:i:s d-m-Y", substr($entries[$i]['created'], 0, 10));
+
+      // Get a node storage object.
+      $node_storage = \Drupal::entityManager()->getStorage('node');
+  
+      // Load a single node.
+      $node = $node_storage->load($entries[$i]['nid']);
+  
+      if ($node->field_image->entity != NULL) {
+        $style = ImageStyle::load('term');
+        $entries[$i]['image_url'] = file_create_url($style->buildUrl($node->field_image->entity->getFileUri()));
+      }
     }
 
     return $entries;
@@ -66,18 +78,20 @@ class RecipeCheckController extends ControllerBase {
     // );
     $headers = array(
       t('Recipe'),
-      // t('Name'),
-      t('You made it'),
-      // t('Email'),
+      t('I made it'),
     );
     $rows = array();
     foreach ($entries = $this->load() as $entry) {
       // Sanitize each entry
       // $rows[] = array_map('\Drupal\Component\Utility\SafeMarkup::checkPlain', $entry);
       $rows[] = array(
-        array('data' => new FormattableMarkup('<a href=":link">@name</a>', 
-          [':link' => $entry['link_url'] = \Drupal::service('path.alias_manager')->getAliasByPath('/node/' . $entry['nid']), 
-          '@name' => $entry['title']])
+        'data1' => new FormattableMarkup(
+          '<a href=":link_url">@name</a><br><a href=":link_url"><img src=":image_url"></a>', 
+          [
+            ':link_url' => $entry['link_url'] = \Drupal::service('path.alias_manager')->getAliasByPath('/node/' . $entry['nid']), 
+            '@name' => $entry['title'],
+            ':image_url' => $entry['image_url']
+          ]
         ),
         $entry['created'],
       );
