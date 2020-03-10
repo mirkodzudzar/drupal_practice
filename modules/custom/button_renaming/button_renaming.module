@@ -14,7 +14,7 @@
 //   }
 
 //   if($form_id == 'search_block_form') {
-//     $form['keys']['#title'] = t('Find a recipe heresadsadas');
-//     $form['keys']['#title_display'] = 'Find a recipe HEREsadasd';
+//     $form['keys']['#title'] = t('Find a recipe');
+//     $form['keys']['#title_display'] = 'Find a recipe';
 //   }
 // }
