@@ -11,6 +11,8 @@ base:
       css/contact-page.css: {}
       css/preparation-page.css: {}
       css/video-page.css: {}
+      css/ratings-page.css: {}
+      css/i-made-it-page.css: {}
   js:
     js/zubmayo.js: {}
   dependencies:
